@@ -1,0 +1,10 @@
+A FAIRE
+
+Completer le fichier ntree.c
+testez le  à travers le fichier main.c 
+en lancant le Makefile hors du repertoire src.
+
+le fichier main.c contient les tests sur les arbres binaires
+qui fonctionne
+et un test sur les arbres n-aires à completer
+
