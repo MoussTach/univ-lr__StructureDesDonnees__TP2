@@ -130,24 +130,14 @@ size_t ntree_size(NTree tree) {
 
 void ntree_pre_order(NTree tree, void (*func)(void *, void *), void *extra_data) {
     if (tree) {
-        int index;
-
-        index = 0;
-        func(tree->data, extra_data);
-        while (index < tree->arity)
-            ntree_pre_order(tree->subtrees[index++], func, extra_data);
+        ntree_in_order(tree, func, extra_data, 0);
     }
 }
 //----------------------------------------
 
 void ntree_post_order(NTree tree, void (*func)(void *, void *), void *extra_data) {
     if (tree) {
-        int index;
-
-        index = 0;
-        while (index < tree->arity)
-            ntree_post_order(tree->subtrees[index++], func, extra_data);
-        func(tree->data, extra_data);
+        ntree_in_order(tree, func, extra_data, tree->arity);
     }
 }
 //----------------------------------------
@@ -157,16 +147,11 @@ void ntree_in_order(NTree tree, void (*func)(void *, void *), void *extra_data, 
         int index;
 
         index = 0;
-        while (index < tree->arity) {
-            //Le '-1' est ici car nous voulons le xeme element, mais
-            //nos pointers commencent a 0.
-            //Dans le cas d'une nTree possedant 2 subTree, nth=2
-            //donnerai le meme resultat qu'un arbre binaire.
-            //tout l'arbre du premier element -> racine -> second element
-            if (index == (nth - 1))
-                func(tree->data, extra_data);
+        while (index < nth)
             ntree_post_order(tree->subtrees[index++], func, extra_data);
-        }
+        func(tree->data, extra_data);
+        while (index < tree->arity)
+            ntree_pre_order(tree->subtrees[index++], func, extra_data);
     }
 }
 //----------------------------------------
